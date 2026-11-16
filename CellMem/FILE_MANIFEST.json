@@ -1,0 +1,110 @@
+{
+  "manifest_excludes_itself": true,
+  "files": [
+    {
+      "path": ".gitattributes",
+      "bytes": 86,
+      "sha256": "8932413744922d9c281836afe1e9a4e912791c322cc4375262295b6545810d89"
+    },
+    {
+      "path": ".gitignore",
+      "bytes": 112,
+      "sha256": "c903638f753cc3b6bc11c916293ed6ec50c83a63230bf07f3a6a3cfb90868fa6"
+    },
+    {
+      "path": "docs/DATA_ACCESS.md",
+      "bytes": 2547,
+      "sha256": "ebf0aec0836f38531034481af25193fa2c919da72993ad1b0cc56ba806aacf0a"
+    },
+    {
+      "path": "docs/method_figure.md",
+      "bytes": 2514,
+      "sha256": "cc8aea7a5f4fbdf489c359ba1a07a2288f2c244f951b56a7f90b8bacc84d241d"
+    },
+    {
+      "path": "docs/method_full_donor_precision.md",
+      "bytes": 6067,
+      "sha256": "8a4032c8adde34c106d1ea19f1c8c8db13b48002874327f1877bb9680d9a11c4"
+    },
+    {
+      "path": "environments/check_python_environment.py",
+      "bytes": 1056,
+      "sha256": "7c3b039eb1d47e113c91b42e4f3d8a36e7f741fb5dc3482accc2ebe968c25f78"
+    },
+    {
+      "path": "environments/environment.yml",
+      "bytes": 146,
+      "sha256": "7b4bbe1204519ceada5936906414096eb74348aa44f923de0919be0540c5ec81"
+    },
+    {
+      "path": "environments/python_core_observed.json",
+      "bytes": 400,
+      "sha256": "952561d2d178dc40ac5e4930d997c7e2d62fa1c6c7d9952daaa7d00945208e25"
+    },
+    {
+      "path": "environments/requirements-core-observed.txt",
+      "bytes": 30,
+      "sha256": "aa2fa88d711e2f0919c4bf04563b4e12aef32cac73133c7ce508255346bad6a4"
+    },
+    {
+      "path": "examples/make_synthetic_inputs.py",
+      "bytes": 1352,
+      "sha256": "17d77100c59de76a8e2ab94507416877f1a354dd8f764eea99e483a6b3e61fc8"
+    },
+    {
+      "path": "frozen/FULL_DONOR_PRECISION_20261116/core.py",
+      "bytes": 5786,
+      "sha256": "47eaaa4fd87ed5513575cce025592824dcd1f5f8bbfb5f61c83389a3ea9a535d"
+    },
+    {
+      "path": "pyproject.toml",
+      "bytes": 461,
+      "sha256": "f13dc3cbe2bfa4934872f7db1354bfb5a7bc48c9c572655009e70f34d35bc723"
+    },
+    {
+      "path": "README.md",
+      "bytes": 3391,
+      "sha256": "f0a41028bfbc54d95edb0bdda88113906e086ce271d116db5c447b5210ad5ef3"
+    },
+    {
+      "path": "SOURCE_PROVENANCE.json",
+      "bytes": 3194,
+      "sha256": "fc781f63617c80b4e21d14b9457cb49af7bfe76b395aa65cd318fb91594c013f"
+    },
+    {
+      "path": "src/cellmem_full_axis/__init__.py",
+      "bytes": 460,
+      "sha256": "bb104e2e7ef4fb74433eab2d1a2b03ee3a8eef626fa64526b80b668382fc61c3"
+    },
+    {
+      "path": "src/cellmem_full_axis/__main__.py",
+      "bytes": 48,
+      "sha256": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d"
+    },
+    {
+      "path": "src/cellmem_full_axis/_frozen_core.py",
+      "bytes": 5786,
+      "sha256": "47eaaa4fd87ed5513575cce025592824dcd1f5f8bbfb5f61c83389a3ea9a535d"
+    },
+    {
+      "path": "src/cellmem_full_axis/api.py",
+      "bytes": 5387,
+      "sha256": "6820371a468a22d5ab5f022da169ece5775bda71f317df24a0b0809afbd13928"
+    },
+    {
+      "path": "src/cellmem_full_axis/cli.py",
+      "bytes": 5050,
+      "sha256": "2eddef1af6ed1e2b58c1f14c61fef7d4760e141a896a76ad2fe99ae6c8218ce3"
+    },
+    {
+      "path": "src/cellmem_full_axis/io.py",
+      "bytes": 4065,
+      "sha256": "7f058b81954fe5a4944e934bddd5c62891ab2b90c62732323d8d03532f2eaac1"
+    },
+    {
+      "path": "tests/test_frozen_method.py",
+      "bytes": 5147,
+      "sha256": "10a078d63610a9b924be705003ce69e4ebf40565bf392657bed4b5d4da9218a1"
+    }
+  ]
+}
