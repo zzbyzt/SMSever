@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="CellMem 冻结算法运行工具、数据集核验与方法源码导航。">
+  <title>CellMem · RNA 去卷积工作台</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<aside class="sidebar">
+  <a class="brand" href="#workbench" aria-label="CellMem 工作台"><span class="brand-symbol">✣</span><span>CellMem<small>RNA DECONVOLUTION</small></span></a>
+  <div class="nav-label">研究工作台</div>
+  <nav aria-label="主导航">
+    <button class="nav-item active" data-page="workbench"><span>◈</span>运行去卷积<span class="nav-arrow">↗</span></button>
+    <button class="nav-item" data-page="datasets"><span>▦</span>数据集核验<span class="nav-count">9</span></button>
+    <button class="nav-item" data-page="method"><span>⌘</span>方法与代码</button>
+    <button class="nav-item" data-page="history"><span>◷</span>运行记录</button>
+  </nav>
+  <div class="sidebar-bottom"><div class="freeze-label"><i></i>冻结方法 · v0.1.0</div><p>FULL_DONOR_PRECISION</p><a href="https://github.com/zzbyzt/SMSever/tree/master/CellMem" target="_blank" rel="noreferrer">公开源码 <span>↗</span></a><small>界面包装不改变算法或成功标准。</small></div>
+</aside>
+<div class="main-shell">
+  <header class="topbar"><div><span class="eyebrow">CELLMEM / WORKSPACE</span><span class="topbar-date">科研工具 · 2026.11</span></div><div id="connection" class="connection"><i></i>连接本地引擎…</div></header>
+  <main>
+    <section class="page active" id="page-workbench">
+      <div class="page-heading"><div><div class="eyebrow">01 / RUN THE FROZEN METHOD</div><h1>从参考到 RNA 份额<span class="teal-dot">.</span></h1><p>选择输入，检查一致性，运行可追溯的冻结算法。</p></div><button class="button secondary" id="load-demo">体验合成示例 <span>↗</span></button></div>
+      <div id="mode-banner" class="notice hidden"></div>
+      <div class="workflow-strip"><span class="step current"><b>1</b>选择输入</span><i></i><span class="step" id="step-run"><b>2</b>校验与求解</span><i></i><span class="step" id="step-result"><b>3</b>查看结果</span><span class="strip-right">本地计算 · 固定参数</span></div>
+      <div class="workspace-grid">
+        <div class="panel input-panel">
+          <div class="panel-title"><h2>输入文件</h2><span class="tag neutral">NPZ</span></div>
+          <p class="panel-subtitle">两份文件必须共享完整、同序的实测基因轴。</p>
+          <label class="file-zone" id="reference-zone"><input id="reference-file" type="file" accept=".npz"><span class="file-icon">▥</span><div><strong>单细胞参考</strong><span id="reference-name">点击选择或拖入 reference.npz</span><small>表达谱 · 原始计数 · 类型 · 基因 · 参考供体</small></div><span class="file-action">＋</span></label>
+          <label class="file-zone" id="bulk-zone"><input id="bulk-file" type="file" accept=".npz"><span class="file-icon alternate">▤</span><div><strong>Bulk 表达</strong><span id="bulk-name">点击选择或拖入 bulk.npz</span><small>未变换的计数 · 同序基因 · 匿名样本编号</small></div><span class="file-action">＋</span></label>
+          <div class="input-footnote"><span>⌁</span><p>输入只交给本机 Python 进程。运行接口不接收目标真值。</p></div>
+          <details class="contract"><summary>查看输入字段与限制 <span>＋</span></summary><div><p><b>reference.npz</b>：F [基因×参考列]、reference_count_sums、column_type、types、genes；建议含 donor_labels。</p><p><b>bulk.npz</b>：Y [基因×样本]、genes、ids。</p><p>本界面单次上传总量≤128 MB、解压单文件≤1 GiB、样本≤200；更大数据使用原命令行。不会自动截断、补零或求交集。</p><a href="https://github.com/zzbyzt/SMSever/blob/master/CellMem/docs/method_full_donor_precision.md" target="_blank" rel="noreferrer">完整输入合同 ↗</a></div></details>
+          <div id="demo-notice" class="notice demo hidden">已选择合成示例：5个基因、3个虚构类型、2个样本。用于验证工具，不是研究结果。</div>
+          <div id="run-error" class="notice error hidden" role="alert"></div>
+          <button id="run-button" class="button primary full" disabled>运行冻结算法 <span>→</span></button>
+          <div class="below-button">数值认证阈值与核心源码均保持冻结。</div>
+        </div>
+        <div class="right-column">
+          <div class="panel engine-panel"><div class="panel-title"><h2>本次如何计算</h2><span class="tag green">FULL · 两阶段</span></div>
+            <div class="pipeline-mini"><div><b>01</b><strong>全轴计数初始解</strong><small>保留供体 × 类型参考列</small></div><span>↓</span><div><b>02</b><strong>参考供体精度</strong><small>均值方差 × 初始组成 × 测量深度</small></div><span>↓</span><div><b>03</b><strong>固定权重再求解</strong><small>按类型聚合完整轴 RNA 份额</small></div></div>
+            <div class="engine-note">当前版本不执行 VarPool 借方差；不输出细胞数比例、存在概率或 UNKNOWN。</div>
+          </div>
+          <div class="panel progress-panel"><div class="panel-title"><h2>运行状态</h2><span id="run-state" class="tag neutral">等待输入</span></div><div id="progress-empty"><span class="empty-glyph">⌁</span><p>准备好输入后，开始一项独立运行。</p><small>每次运行保存输入哈希、预测文件和数值诊断。</small></div><div id="progress-active" class="hidden"><div class="runtime-row"><strong id="elapsed">00:00</strong><span id="phase-label">准备输入</span></div><div class="progress-track"><i></i></div><div id="input-summary" class="compact-stats"></div><p id="job-id" class="muted mono"></p></div></div>
+        </div>
+      </div>
+      <div id="results" class="panel results-panel hidden"><div class="panel-title"><div><div class="eyebrow">RNA FRACTIONS / RESULTS</div><h2>组成估计</h2></div><a id="download-all" class="button secondary" href="#">下载完整结果 ↓</a></div><div id="result-notice" class="notice"></div><div class="result-controls"><label for="sample-select">选择样本</label><select id="sample-select"></select><span id="certificate" class="tag"></span></div><div class="result-layout"><div><div id="composition-bar" class="composition-bar"></div><div id="composition-legend" class="composition-legend"></div><p class="muted">RNA 份额不等于细胞数量比例。数值收敛也不等于细胞身份已经得到证明。</p></div><div class="table-wrap"><table><thead><tr><th>类型</th><th>RNA 份额</th><th>参考供体列</th></tr></thead><tbody id="result-rows"></tbody></table></div></div><details class="contract"><summary>数值诊断与下载 <span>＋</span></summary><div><div id="numeric-detail" class="diagnostic-grid"></div><div id="download-links" class="inline-links"></div></div></details></div>
+    </section>
+
+    <section class="page" id="page-datasets">
+      <div class="page-heading"><div><div class="eyebrow">02 / DATASET VERIFICATION</div><h1>数据有据可查<span class="teal-dot">.</span></h1><p>完整性、关联一致性与实验独立性，分别给出证据。</p></div><button id="download-audit" class="button secondary">下载核验记录 ↓</button></div>
+      <div id="audit-metrics" class="metric-row"></div>
+      <div class="notice" id="audit-scope">正在加载本轮数据核验记录。</div>
+      <div class="dataset-layout"><div class="panel dataset-list-panel"><label class="search"><span>⌕</span><input id="dataset-search" placeholder="搜索研究 / 来源" aria-label="搜索数据集"></label><div id="dataset-list"></div></div><div id="dataset-detail" class="panel dataset-detail"></div></div>
+      <div class="panel check-panel"><div class="panel-title"><h2>本轮核验项目</h2><div class="status-filter"><button data-filter="all" class="selected">全部</button><button data-filter="issues">需关注</button></div></div><div class="table-wrap"><table><thead><tr><th>核验项</th><th>范围 / 证据</th><th>状态</th></tr></thead><tbody id="audit-checks"></tbody></table></div></div>
+      <div class="panel limitations-panel"><h2>仍需区分的边界</h2><ul id="audit-limitations"></ul></div>
+    </section>
+
+    <section class="page" id="page-method">
+      <div class="page-heading"><div><div class="eyebrow">03 / METHOD & SOURCE</div><h1>沿着代码，理解方法<span class="teal-dot">.</span></h1><p>点击流程节点，查看数学操作、代码位置及解释边界。</p></div><a class="button secondary" href="https://github.com/zzbyzt/SMSever/tree/master/CellMem" target="_blank" rel="noreferrer">浏览 GitHub ↗</a></div>
+      <div class="panel method-panel"><div id="method-steps" class="method-steps"></div><div id="method-detail" class="method-detail"></div></div>
+      <div class="module-cards"><article class="panel"><span class="eyebrow">FIXED</span><h2>一个冻结算法</h2><p>FULL_DONOR_PRECISION · 0.1.0</p><p>保留多参考列，在完整输入基因轴上完成两次求解。界面不暴露调参选项。</p></article><article class="panel"><span class="eyebrow">REPRODUCIBLE</span><h2>每次运行都有凭据</h2><p>RUN_LOCK → 预测 → PREDICTION_LOCK</p><p>输入、核心源码、环境、输出哈希和数值认证被一起记录。</p></article><article class="panel"><span class="eyebrow">BOUNDARY</span><h2>保留未解决的问题</h2><p>单供体方差不支持；不存在可靠 UNKNOWN。</p><p>RNA 份额、细胞数量和细胞是否存在，仍是不同的评价问题。</p></article></div>
+      <div class="panel data-access"><div><h2>原始数据与实验配置</h2><p>矩阵 / 标签 / 划分三个模块 · 78个ZIP分卷 · 提取码 <b>8vxj</b></p></div><a class="button primary" href="https://pan.baidu.com/s/1pMzediWV4fjJEDvjRMPa2g?pwd=8vxj" target="_blank" rel="noreferrer">百度网盘 ↗</a></div>
+    </section>
+
+    <section class="page" id="page-history"><div class="page-heading"><div><div class="eyebrow">04 / LOCAL RUNS</div><h1>运行记录<span class="teal-dot">.</span></h1><p>这里仅列出本机界面产生的运行，不冒充历史 benchmark 总表。</p></div><button class="button secondary" id="refresh-history">刷新 ↻</button></div><div class="panel table-wrap"><table><thead><tr><th>运行</th><th>输入</th><th>时间</th><th>状态</th><th></th></tr></thead><tbody id="history-rows"></tbody></table><p id="history-empty" class="muted">正在读取本地记录。</p></div></section>
+  </main>
+  <footer><span>CellMem · 参考供体精度加权的全轴计数估计</span><span>RNA fraction ≠ cell fraction ≠ presence</span></footer>
+</div>
+<div id="toast" role="status" class="toast hidden"></div>
+<script src="audit-data.js"></script><script src="app.js"></script>
+</body></html>

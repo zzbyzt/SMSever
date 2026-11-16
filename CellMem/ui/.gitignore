@@ -1,0 +1,8 @@
+.sites-local/
+node_modules/
+__pycache__/
+*.py[cod]
+runtime/
+.venv/
+*.log
+.env
